@@ -4,20 +4,22 @@ import calendar
 import datetime
 
 def main():
-    print(f"Running tracker!")
-    income = get_user_Income()
-    print(income)
-    Expense = get_user_Expense()
-    print(Expense)
+    while True:
+        action = input("Enter 'income' to input income, 'expense' to input expense, 'summary' to summarize balance, or 'exit' to quit: ").lower()
 
-    income_file_path = "income.csv"
-    save_user_Income(income,income_file_path)
-
-    expense_file_path = "expense.csv"
-    save_user_Expense(Expense, expense_file_path)
-
-    summerize_balance(income_file_path, expense_file_path)
-
+        if action == 'income':
+            income = get_user_Income()
+            save_user_Income(income, "income.csv")
+        elif action == 'expense':
+            expense = get_user_Expense()
+            save_user_Expense(expense, "expense.csv")
+        elif action == 'summary':
+            summerize_balance("income.csv", "expense.csv")
+        elif action == 'exit':
+            print("Exiting tracker.")
+            break
+        else:
+            print("Invalid input. Please try again.")
 money_type = ['Cash', 'Online Payment' , 'Bank' ]
 
 #Get user input for income and expense
@@ -94,7 +96,6 @@ def summerize_balance(income_file_path , expense_file_path):
     
     print(f"summerize user income")
     with open(income_file_path ,"r") as f:
-       print("income")
        incomes:list[Income]=[]
        lines = f.readlines()
        for line in lines:
@@ -129,9 +130,8 @@ def summerize_balance(income_file_path , expense_file_path):
     print(f"\n Total Income: npr {total_income:.2f} ")
     
  
-    print(f"summerize user expense")
+    print(f"\n summerize user expense")
     with open(expense_file_path, "r") as f:
-       print("\nexpenses")
        expenses:list[Expense] = []
        lines = f.readlines()
        for line in lines:
@@ -167,7 +167,7 @@ def summerize_balance(income_file_path , expense_file_path):
 
     #remaining budget from both
     remaining_total_budget = total_income - total_expense
-    print(f"\n remaining budget {remaining_total_budget}")
+    print(f"remaining budget {remaining_total_budget}")
 
     #remaining budget based on type
     budget_by_type={}
@@ -187,7 +187,7 @@ def summerize_balance(income_file_path , expense_file_path):
 
     remaining_day = days_left- now.day
 
-    print("remaining days:" , remaining_day)
+    print("\n remaining days:" , remaining_day)
     
     day_budget = remaining_total_budget/remaining_day
 
